@@ -21,7 +21,7 @@ php进行序列化的目的是保存一个对象方便以后重用
 
         echo serialize($per)
     ?>`
-本代码定义了person类 并将其实例化为per这个对象，并将对象的序列化，下图为序列化结果：    
+本代码定义了person类 并将其实例化为per这个对象，并将对象的序列化，下图为序列化结果：        
 ![avatar](index_files/SO_7EG_7DG_7BXXB_24X6_60Q_28J_604YV_5DR.png "序列化实例")     
 
 其中可以看到序列化只会保存序列的变量而不会保存序列化的方法
@@ -50,8 +50,9 @@ php进行序列化的目的是保存一个对象方便以后重用
         $per-> Information();
     
     ?>
-这里使用unper变量保存了per序列化后的字符串，并对其进行反序列化 最后使用对象的方法，可以看到对象准确调用了自己的变量：
-![avatar](index_files/ICT84JHIOYJP_G5Y57_7BH_30.png "反序列化实例")
+这里使用unper变量保存了per序列化后的字符串，并对其进行反序列化 最后使用对象的方法，可以看到对象准确调用了自己的变量：     
+
+![avatar](index_files/ICT84JHIOYJP_G5Y57_7BH_30.png "反序列化实例")       
 
 #### 2.php魔法函数
 在php中有一类函数，可以在脚本的任何地方不需要声明就可以使用。而这正好成为了我们利用序列化漏洞的关键！
@@ -99,7 +100,8 @@ php进行序列化的目的是保存一个对象方便以后重用
         echo $per;
     
     ?> 
-这个代码中第26行对象实例化，那么就用到了_construct方法，在第29行直接输出对象即用到了_toString方法，最后结束时用到了__destruct方法。我们也可以在运行中看到使用的整个流程：
+这个代码中第26行对象实例化，那么就用到了_construct方法，在第29行直接输出对象即用到了_toString方法，最后结束时用到了__destruct方法。我们也可以在运行中看到使用的整个流程：       
+
 ![avatar](index_files/D_7D_7D_6047Q_25WDYGE_7E1MRLW_60_5DGL.png "魔法函数实例")
 
 #### 3.php反序列化漏洞
@@ -154,10 +156,14 @@ php反序列化漏洞又称对象注入，可能会导致注入，远程代码�
         echo serialize($test);
     ?>
 整个流程反向利用整理如下所示：
-首先获得要删除文件的序列化值（在delete类中）
-![avatar](index_files/BECK_5B58CEOE4UBB_7B9S_7BC_7D2Q.png "序列化文件名")
-其次，通过找到的利用点通过get方式传入序列化值
-![avatar](index_files/_24_24P_7B@B9V_291NE0P_5D_F_7BHB_5B0N.png "漏洞利用点")
+首先获得要删除文件的序列化值（在delete类中）       
+
+![avatar](index_files/BECK_5B58CEOE4UBB_7B9S_7BC_7D2Q.png "序列化文件名")     
+
+其次，通过找到的利用点通过get方式传入序列化值    
+
+![avatar](index_files/_24_24P_7B@B9V_291NE0P_5D_F_7BHB_5B0N.png "漏洞利用点")    
+
 最终成功删除文件
 
 
@@ -204,11 +210,13 @@ php反序列化漏洞又称对象注入，可能会导致注入，远程代码�
 ```
 127.0.0.1/test.php?s=O:4:"test":2:{s:4:"name";s:25:"<script>alert(1)</script>";}
 ```
-测试一下当正常访问时，可以看到访问了_wakeup()以及_destrcut()。未能向文件写入。
-![avatar](index_files/SER_7BJZ_24_257U_5D8TB_5DDG_24_29ZT_28L.png "正常访问")
+测试一下当正常访问时，可以看到访问了_wakeup()以及_destrcut()。未能向文件写入。   
 
-再测试一下，试着更改序列化中的对象属性值，绕过_wakeup()的执行
-![avatar()](index_files/EIS_604AQ2@JE_60_5D5_5BI9G_5B3I4N.png "绕过wakeup()")
+![avatar](index_files/SER_7BJZ_24_257U_5D8TB_5DDG_24_29ZT_28L.png "正常访问")   
+
+再测试一下，试着更改序列化中的对象属性值，绕过_wakeup()的执行     
+![avatar()](index_files/EIS_604AQ2@JE_60_5D5_5BI9G_5B3I4N.png "绕过wakeup()")     
+
 可以看到图中所示，代码绕过了_wakeup()的执行，直接执行了_destruct()执行，向3.php中写入了xss代码实现了漏洞复现利用。
 
 ##### b. 注入对象构造方法
@@ -263,8 +271,8 @@ php反序列化漏洞又称对象注入，可能会导致注入，远程代码�
     echo $a;
 ?>
 ```
-这个代码中其他不变，只需将目标代码中没有触发的_construct()关键点更改为我们需要的类C的相关内容即可。
-![avatar](index_files/L2_5B_60W23QTIY_256_2439_25M8TIK8.png "代码实现")
+这个代码中其他不变，只需将目标代码中没有触发的_construct()关键点更改为我们需要的类C的相关内容即可。    
+![avatar](index_files/L2_5B_60W23QTIY_256_2439_25M8TIK8.png "代码实现")     
 
 可以看到实现了通过类A实现类C的函数，并利用了其中的危险代码实现注入。
 
@@ -280,8 +288,8 @@ php反序列化漏洞又称对象注入，可能会导致注入，远程代码�
         echo serialize(new person);
 ?>
 ```
-序列化结果如下：
-![avatar](index_files/UA_60X0_24_25_7EKL0UB_7BGD_293_29VW5N.png "private&protected")
+序列化结果如下：    
+![avatar](index_files/UA_60X0_24_25_7EKL0UB_7BGD_293_29VW5N.png "private&protected")    
 所以当我们自己注入时如果变量由private修饰则需在前面加入“%00变量名%00”，而由protected修饰的话则需在前面加入“%00*%00”。前面的数字也应相应改变。
     
 ##### 利用phar绕过unserialize()
