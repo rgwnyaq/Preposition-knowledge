@@ -1,5 +1,4 @@
 # 目录
-[TOC]
 ### 反射
 #### 定义
 Java的反射（reflection）机制，是指在程序的运行状态中：    
@@ -25,7 +24,7 @@ Java的反射（reflection）机制，是指在程序的运行状态中：
 
 **== 上述的getXXX只能获取public属性的对应值，要获取所有的，则需要使用getDeclaredXXX。这样就可以获取所有的属性的对应信息。还有就是就算可以get所有的这些属性，但如果要访问的话，需使用setACCESSIABLE(True)来暴力访问。==**
 
-
+---
 ### servlet
 #### 定义
 servlet，是java编写的服务器端程序。其主要功能在交互式地浏览和修改数据，生成动态的Web内容。狭义的Servlet是指java语言实现的一个接口。更多的广义的Servlet是指任何实现了这个servlet接口的类。      
