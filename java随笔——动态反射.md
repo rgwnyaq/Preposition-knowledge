@@ -113,7 +113,8 @@ public class HelloInterceptor implements MethodInterceptor{
     }
 }
 ```
-methodProxy为代理方法，invokeSuper为调用被拦截的方法
+methodProxy为代理方法，invokeSuper为调用被拦截的方法   
+
 4.创建被代理的类，使用动态代理
 ```
 public class Main {
